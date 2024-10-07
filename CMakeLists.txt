@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.29)
 
 set(CMAKE_CXX_STANDARD 26)
-set(PROJECT_NAME cmake-template)
+set(PROJECT_NAME learn-opengl)
 
 project(${PROJECT_NAME})
 
