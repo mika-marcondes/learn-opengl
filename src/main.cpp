@@ -75,9 +75,17 @@ int main()
   glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
   glCompileShader(fragmentShader);
 
+  const unsigned int shaderProgram = glCreateProgram();
+  glAttachShader(shaderProgram, vertexShader);
+  glAttachShader(shaderProgram, fragmentShader);
+  glLinkProgram(shaderProgram);
+  glUseProgram(shaderProgram);
+  glDeleteShader(vertexShader);
+  glDeleteShader(fragmentShader);
+
   int success;
   char infoLog[512];
-  glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
 
   if (!success)
   {
