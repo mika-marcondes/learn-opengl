@@ -2,7 +2,18 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) { glViewport(0, 0, width, height); }
+// Vertex Shader
+const char *vertexShaderSource = "#version 330 core\n"
+                                 "layout (location = 0) in vec3 aPos;\n"
+                                 "void main()\n"
+                                 "{\n"
+                                 "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                 "}\0";
+
+void framebuffer_size_callback(GLFWwindow *window, const int width, const int height)
+{
+  glViewport(0, 0, width, height);
+}
 
 void processInput(GLFWwindow *window)
 {
@@ -17,9 +28,9 @@ int main()
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  GLFWwindow *window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+  GLFWwindow *window = glfwCreateWindow(800, 600, "LearnOpenGL", nullptr, nullptr);
 
-  if (window == NULL)
+  if (window == nullptr)
   {
     std::cout << "Failed to create GLFW window" << std::endl;
     glfwTerminate();
@@ -36,6 +47,31 @@ int main()
 
   glViewport(0, 0, 800, 600);
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+  constexpr float vertices[] = {
+    -0.5f, -0.5f, 0.0f, //
+    0.5f,  -0.5f, 0.0f, //
+    0.0f,  0.5f,  0.0f, //
+  };
+
+  unsigned int VBO;
+  glGenBuffers(1, &VBO);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+  const unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+  glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
+  glCompileShader(vertexShader);
+
+  int success;
+  char infoLog[512];
+  glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+
+  if (!success)
+  {
+    glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
+    std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+  }
 
   while (!glfwWindowShouldClose(window))
   {
