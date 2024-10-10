@@ -19,6 +19,7 @@ FetchContent_MakeAvailable(glad)
 
 file(GLOB_RECURSE sources src/*.cpp src/*.c)
 
-add_executable(${PROJECT_NAME} ${sources})
+add_executable(${PROJECT_NAME} ${sources}
+        src/shader.h)
 target_link_libraries(${PROJECT_NAME} PRIVATE glad glfw)
 set_property(TARGET ${PROJECT_NAME} PROPERTY C_STANDARD 99)
