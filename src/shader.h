@@ -66,10 +66,19 @@ public:
     glDeleteShader(fragment);
   }
 
-  void use();
-  void setBool(const std::string &name, bool value);
-  void setInt(const std::string &name, int value);
-  void setFloat(const std::string &name, float value);
+  void use() const { glUseProgram(ID); }
+  void setBool(const std::string &name, bool value) const
+  {
+    glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
+  }
+  void setInt(const std::string &name, const int value) const
+  {
+    glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+  }
+  void setFloat(const std::string &name, const float value) const
+  {
+    glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+  }
 
 private:
   static void checkCompileErrors(const unsigned int shader, const std::string &type)
