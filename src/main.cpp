@@ -1,3 +1,4 @@
+#include "shader.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -52,6 +53,8 @@ int main()
     std::cout << "Failed do initialize GLAD" << std::endl;
     return -1;
   }
+
+  Shader ourShader("vertexShader.vs", "fragmentShader.fs");
 
   constexpr float vertices[] = {
     // positions        // colors
