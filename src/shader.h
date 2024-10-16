@@ -65,13 +65,12 @@ public:
       glDeleteShader(fragment);
     }
 
-    void use()
-    {
+    void use() const {
       glUseProgram(ID);
     }
 
 private:
-    static void checkCompileErrors(unsigned int shader, std::string type)
+    static void checkCompileErrors(const unsigned int shader, const std::string &type)
   {
     int success;
     char infoLog[1024];
