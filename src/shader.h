@@ -54,12 +54,24 @@ public:
       glShaderSource(fragment, 1, &fShaderCode, nullptr);
       glCompileShader(fragment);
       checkCompileErrors(fragment, "FRAGMENT");
+
+      ID = glCreateProgram();
+      glAttachShader(ID, vertex);
+      glAttachShader(ID, fragment);
+      glLinkProgram(ID);
+      checkCompileErrors(ID, "PROGRAM");
+      // delete shaders
+      glDeleteShader(vertex);
+      glDeleteShader(fragment);
     }
 
-    void use();
+    void use()
+    {
+      glUseProgram(ID);
+    }
 
 private:
-  void checkCompileErrors(unsigned int shader, std::string type)
+    static void checkCompileErrors(unsigned int shader, std::string type)
   {
     int success;
     char infoLog[1024];
@@ -70,6 +82,14 @@ private:
       {
         glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
         std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog << "\n" << std::endl;
+      }
+    } else
+    {
+      glGetProgramiv(shader, GL_LINK_STATUS, &success);
+      if (!success)
+      {
+        glGetProgramInfoLog(shader, 1024, nullptr, infoLog);
+        std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n" << std::endl;
       }
     }
   }

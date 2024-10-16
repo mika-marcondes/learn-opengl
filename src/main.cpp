@@ -54,7 +54,7 @@ int main()
     return -1;
   }
 
-  Shader ourShader("vertexShader.vs", "fragmentShader.fs");
+  Shader ourShader("../shaders/vertexShader.vs", "../shaders/fragmentShader.fs");
 
   constexpr float vertices[] = {
     // positions        // colors
@@ -87,6 +87,10 @@ int main()
 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    ourShader.use();
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 
     glfwSwapBuffers(window);
     glfwPollEvents();
