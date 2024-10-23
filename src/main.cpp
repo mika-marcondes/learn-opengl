@@ -47,7 +47,6 @@ int main()
   {
     std::cout << "Failed to load texture" << std::endl;
   }
-  stbi_image_free(data);
 
   unsigned int texture;
   glGenTextures(1, &texture);
@@ -61,10 +60,11 @@ int main()
   Shader ourShader("../shaders/vertexShader.vs", "../shaders/fragmentShader.fs");
 
   constexpr float vertices[] = {
-    0.5f,  0.5f,  0.0f, // top right
-    0.5f,  -0.5f, 0.0f, // bottom right
-    -0.5f, -0.5f, 0.0f, // bottom left
-    -0.5f, 0.5f,  0.0f, // top left
+    // positions        // colors         // texture coords
+    0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
+    0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
+    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
+    -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top left
   };
 
   unsigned int indices[] = {
@@ -110,6 +110,8 @@ int main()
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VBO);
   glDeleteBuffers(1, &EBO);
+  stbi_image_free(data);
+
   glfwTerminate();
   return 0;
 }
